@@ -1,0 +1,208 @@
+
+
+<!doctype html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Merge Intervals (56) &#8212; Blueberry 1.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/bizstyle.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../../_static/bizstyle.js"></script>
+    <link rel="top" title="Blueberry 1.0.0 documentation" href="../../index.html" />
+    <link rel="up" title="Lian Shu" href="../fb.html" />
+    <link rel="next" title="Decode Ways (91)" href="decodeWays.html" />
+    <link rel="prev" title="Minimum Window Substring (76)" href="minWinSubstr.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="decodeWays.html" title="Decode Ways (91)"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="minWinSubstr.html" title="Minimum Window Substring (76)"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Blueberry 1.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../fb.html" accesskey="U">Lian Shu</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="minWinSubstr.html"
+                        title="previous chapter">Minimum Window Substring (76)</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="decodeWays.html"
+                        title="next chapter">Decode Ways (91)</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/lc/fb/mergeIntervals.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="merge-intervals-56">
+<span id="merge-intervals"></span><h1>Merge Intervals (56)<a class="headerlink" href="#merge-intervals-56" title="Permalink to this headline">¶</a></h1>
+<p><strong>Two Pointers</strong></p>
+<p>Given a collection of intervals, merge all overlapping intervals.</p>
+<div class="line-block">
+<div class="line">For example,</div>
+<div class="line">Given [1,3],[2,6],[8,10],[15,18],</div>
+<div class="line">return [1,6],[8,10],[15,18].</div>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p><strong>Solution</strong></p>
+<ol class="arabic simple">
+<li>Sort the list by start number</li>
+<li>Using left and right pointers to record current range</li>
+<li>If the range boundary found, add it into result list</li>
+</ol>
+<div class="highlight-java"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span> 
+	<span class="kd">public</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">Intervals</span><span class="o">&gt;</span> <span class="nf">mergeIntervals</span><span class="o">(</span><span class="n">List</span><span class="o">&lt;</span><span class="n">Interval</span><span class="o">&gt;</span> <span class="n">intervals</span><span class="o">)</span> <span class="o">{</span>
+		<span class="n">List</span><span class="o">&lt;</span><span class="n">Interval</span><span class="o">&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;();</span>
+        
+        <span class="k">if</span> <span class="o">(</span><span class="n">intervals</span><span class="o">.</span><span class="na">size</span><span class="o">()</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+        <span class="o">}</span>
+        
+        <span class="n">Collections</span><span class="o">.</span><span class="na">sort</span><span class="o">(</span><span class="n">intervals</span><span class="o">,</span> <span class="k">new</span> <span class="n">Comparator</span><span class="o">&lt;</span><span class="n">Interval</span><span class="o">&gt;()</span> <span class="o">{</span>
+           <span class="nd">@Override</span>
+           <span class="kd">public</span> <span class="kt">int</span> <span class="nf">compare</span><span class="o">(</span><span class="n">Interval</span> <span class="n">i1</span><span class="o">,</span> <span class="n">Interval</span> <span class="n">i2</span><span class="o">)</span> <span class="o">{</span>
+               <span class="k">return</span> <span class="n">i1</span><span class="o">.</span><span class="na">start</span> <span class="o">-</span> <span class="n">i2</span><span class="o">.</span><span class="na">start</span><span class="o">;</span>
+           <span class="o">}</span>
+        <span class="o">});</span>
+        
+        <span class="kt">int</span> <span class="n">left</span> <span class="o">=</span> <span class="n">intervals</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">).</span><span class="na">start</span><span class="o">;</span>
+        <span class="kt">int</span> <span class="n">right</span> <span class="o">=</span> <span class="n">intervals</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">).</span><span class="na">end</span><span class="o">;</span>
+        
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">intervals</span><span class="o">.</span><span class="na">size</span><span class="o">();</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+
+            <span class="k">if</span> <span class="o">(</span><span class="n">intervals</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">i</span><span class="o">).</span><span class="na">start</span> <span class="o">&gt;</span> <span class="n">right</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">result</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">Interval</span><span class="o">(</span><span class="n">left</span><span class="o">,</span><span class="n">right</span><span class="o">));</span>
+                <span class="n">left</span> <span class="o">=</span> <span class="n">intervals</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">i</span><span class="o">).</span><span class="na">start</span><span class="o">;</span>
+                <span class="n">right</span> <span class="o">=</span> <span class="n">intervals</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">i</span><span class="o">).</span><span class="na">end</span><span class="o">;</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="k">if</span> <span class="o">(</span><span class="n">intervals</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">i</span><span class="o">).</span><span class="na">end</span> <span class="o">&gt;</span> <span class="n">right</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="n">right</span> <span class="o">=</span> <span class="n">intervals</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">i</span><span class="o">).</span><span class="na">end</span><span class="o">;</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        
+        <span class="n">result</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">Interval</span><span class="o">(</span><span class="n">left</span><span class="o">,</span><span class="n">right</span><span class="o">));</span>
+        
+        <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</td></tr></table></div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="decodeWays.html" title="Decode Ways (91)"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="minWinSubstr.html" title="Minimum Window Substring (76)"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Blueberry 1.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../fb.html" >Lian Shu</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2016, Suhan Liu.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.6.
+    </div>
+  </body>
+</html>

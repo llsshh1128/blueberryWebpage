@@ -1,0 +1,260 @@
+
+
+<!doctype html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Regular Expression Matching (10) &#8212; Blueberry 1.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/bizstyle.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../../_static/bizstyle.js"></script>
+    <link rel="top" title="Blueberry 1.0.0 documentation" href="../../index.html" />
+    <link rel="up" title="Lian Shu" href="../fb.html" />
+    <link rel="next" title="First Bad Version (278)" href="firstBadVersion.html" />
+    <link rel="prev" title="Decode Ways (91)" href="decodeWays.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="firstBadVersion.html" title="First Bad Version (278)"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="decodeWays.html" title="Decode Ways (91)"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Blueberry 1.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../fb.html" accesskey="U">Lian Shu</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="decodeWays.html"
+                        title="previous chapter">Decode Ways (91)</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="firstBadVersion.html"
+                        title="next chapter">First Bad Version (278)</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/lc/fb/regExprMatch.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="regular-expression-matching-10">
+<span id="regular-expression-matching"></span><h1>Regular Expression Matching (10)<a class="headerlink" href="#regular-expression-matching-10" title="Permalink to this headline">¶</a></h1>
+<p><strong>Dynamic Programming</strong></p>
+<p>Implement regular expression matching with support for &#8216;.&#8217; and &#8216;*&#8217;.</p>
+<div class="line-block">
+<div class="line">&#8216;.&#8217; Matches any single character.</div>
+<div class="line">&#8216;*&#8217; Matches zero or more of the preceding element.</div>
+</div>
+<p>The matching should cover the entire input string (not partial).</p>
+<div class="line-block">
+<div class="line">The function prototype should be:</div>
+<div class="line">public boolean isMatch(String s, String p)</div>
+</div>
+<div class="line-block">
+<div class="line">Some examples:</div>
+<div class="line">isMatch(&#8220;aa&#8221;,&#8221;a&#8221;) → false</div>
+<div class="line">isMatch(&#8220;aa&#8221;,&#8221;aa&#8221;) → true</div>
+<div class="line">isMatch(&#8220;aaa&#8221;,&#8221;aa&#8221;) → false</div>
+<div class="line">isMatch(&#8220;aa&#8221;, &#8220;a*&#8221;) → true</div>
+<div class="line">isMatch(&#8220;aa&#8221;, &#8221;.*&#8221;) → true</div>
+<div class="line">isMatch(&#8220;ab&#8221;, &#8221;.*&#8221;) → true</div>
+<div class="line">isMatch(&#8220;aab&#8221;, &#8220;c*a*b&#8221;) → true</div>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p><strong>Solution</strong></p>
+<div class="line-block">
+<div class="line">State: dp[i][j] -&gt; s[0:i-1] and p[0:j-1] match or not</div>
+<div class="line">Initial state:</div>
+<div class="line">State function:</div>
+</div>
+<ol class="arabic">
+<li><p class="first">p.charAt(j) == s.charAt(i)  ==&gt;  result[i][i] = result[i - 1][j - 1]</p>
+</li>
+<li><p class="first">p.charAt(j) == &#8216;.&#8217;  ==&gt;  result[i][j] = result[i - 1][j - 1];</p>
+</li>
+<li><dl class="first docutils">
+<dt>p.charAt(j) == &#8216;*&#8217;</dt>
+<dd><ol class="first last arabic simple">
+<li></li>
+</ol>
+</dd>
+</dl>
+</li>
+</ol>
+<div class="highlight-java"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span> 
+	<span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">regExprMatch</span><span class="o">(</span><span class="n">String</span> <span class="n">s</span><span class="o">,</span> <span class="n">String</span> <span class="n">p</span><span class="o">)</span> <span class="o">{</span>
+		<span class="kt">int</span> <span class="n">len1</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="na">length</span><span class="o">();</span>
+		<span class="kt">int</span> <span class="n">len2</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="na">length</span><span class="o">();</span>
+		
+		<span class="k">if</span> <span class="o">(</span><span class="n">s</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span> <span class="n">p</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+		    <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+		<span class="o">}</span>
+
+		<span class="kt">boolean</span><span class="o">[][]</span> <span class="n">results</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">boolean</span><span class="o">[</span><span class="n">len1</span> <span class="o">+</span> <span class="mi">1</span><span class="o">][</span><span class="n">len2</span> <span class="o">+</span> <span class="mi">1</span><span class="o">];</span>
+		<span class="n">results</span><span class="o">[</span><span class="mi">0</span><span class="o">][</span><span class="mi">0</span><span class="o">]</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+
+		<span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">len2</span><span class="o">;</span> <span class="n">j</span><span class="o">++)</span> <span class="o">{</span>
+			<span class="k">if</span> <span class="o">(</span><span class="n">p</span><span class="o">.</span><span class="na">charAt</span><span class="o">(</span><span class="n">j</span><span class="o">)</span> <span class="o">==</span> <span class="sc">&#39;*&#39;</span> <span class="o">&amp;&amp;</span> <span class="n">results</span><span class="o">[</span><span class="mi">0</span><span class="o">][</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="o">])</span> <span class="o">{</span>
+				<span class="n">results</span><span class="o">[</span><span class="mi">0</span><span class="o">][</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="o">]</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+			<span class="o">}</span>
+		<span class="o">}</span>
+
+		<span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">len1</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+			<span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">len2</span><span class="o">;</span> <span class="n">j</span><span class="o">++)</span> <span class="o">{</span>
+				<span class="k">if</span> <span class="o">(</span><span class="n">p</span><span class="o">.</span><span class="na">charAt</span><span class="o">(</span><span class="n">j</span><span class="o">)</span> <span class="o">==</span> <span class="sc">&#39;.&#39;</span><span class="o">)</span> <span class="o">{</span>
+					<span class="n">results</span><span class="o">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="o">][</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="o">]</span> <span class="o">=</span> <span class="n">results</span><span class="o">[</span><span class="n">i</span><span class="o">][</span><span class="n">j</span><span class="o">];</span> 
+				<span class="o">}</span>
+
+				<span class="k">if</span> <span class="o">(</span><span class="n">p</span><span class="o">.</span><span class="na">charAt</span><span class="o">(</span><span class="n">j</span><span class="o">)</span> <span class="o">==</span> <span class="n">s</span><span class="o">.</span><span class="na">charAt</span><span class="o">(</span><span class="n">i</span><span class="o">))</span> <span class="o">{</span>
+					<span class="n">results</span><span class="o">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="o">][</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="o">]</span> <span class="o">=</span> <span class="n">results</span><span class="o">[</span><span class="n">i</span><span class="o">][</span><span class="n">j</span><span class="o">];</span>
+				<span class="o">}</span>
+
+				<span class="k">if</span> <span class="o">(</span><span class="n">p</span><span class="o">.</span><span class="na">charAt</span><span class="o">(</span><span class="n">j</span><span class="o">)</span> <span class="o">==</span> <span class="sc">&#39;*&#39;</span><span class="o">)</span> <span class="o">{</span>
+					<span class="k">if</span> <span class="o">(</span><span class="n">p</span><span class="o">.</span><span class="na">charAt</span><span class="o">(</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="o">)</span> <span class="o">!=</span> <span class="n">s</span><span class="o">.</span><span class="na">charAt</span><span class="o">(</span><span class="n">i</span><span class="o">)</span> 
+						<span class="o">&amp;&amp;</span> <span class="n">p</span><span class="o">.</span><span class="na">charAt</span><span class="o">(</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="o">)</span> <span class="o">!=</span> <span class="sc">&#39;.&#39;</span><span class="o">)</span> <span class="o">{</span>
+						<span class="n">results</span><span class="o">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="o">][</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="o">]</span> 
+						<span class="o">=</span> <span class="n">results</span><span class="o">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="o">][</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="o">];</span>
+					<span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+						<span class="n">results</span><span class="o">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="o">][</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="o">]</span> 
+							<span class="o">=</span> <span class="n">results</span><span class="o">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="o">][</span><span class="n">j</span><span class="o">]</span> 
+							<span class="o">||</span> <span class="n">results</span><span class="o">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="o">][</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="o">]</span>
+							<span class="o">||</span> <span class="n">results</span><span class="o">[</span><span class="n">i</span><span class="o">][</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="o">];</span>
+					<span class="o">}</span>
+				<span class="o">}</span>
+			<span class="o">}</span>
+		<span class="o">}</span>
+
+		<span class="k">return</span> <span class="n">results</span><span class="o">[</span><span class="n">len1</span><span class="o">][</span><span class="n">len2</span><span class="o">];</span> 
+
+
+	<span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</td></tr></table></div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="firstBadVersion.html" title="First Bad Version (278)"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="decodeWays.html" title="Decode Ways (91)"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Blueberry 1.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../fb.html" >Lian Shu</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2016, Suhan Liu.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.6.
+    </div>
+  </body>
+</html>

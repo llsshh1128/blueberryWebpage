@@ -1,0 +1,8 @@
+.. _LinkedList:
+
+===================
+LinkedList
+===================
+
+.. toctree::
+   :maxdepth: 2

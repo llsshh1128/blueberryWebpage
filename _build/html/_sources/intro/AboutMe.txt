@@ -1,0 +1,24 @@
+
+=======================
+About Me
+=======================
+
+My name is Suhan Liu. I am a master student in Scientific Computing and Applied Math.
+I love coding, especially Java and Python. 
+How about you? ^_^
+
+
+###########################
+Orientation
+###########################
+
+1. Find the longest common subsequence in an array.
+
+2. Find the Kth smallest element in a binary search tree.
+
+3. Try to implement Fibonacci series.
+
+
+If you did all of them, maybe you would also find out the magic of coding. Let's start play coding right now!
+
+
